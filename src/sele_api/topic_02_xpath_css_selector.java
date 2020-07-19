@@ -3,7 +3,6 @@ package sele_api;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,11 +11,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import support.GenerateData;
+
 public class topic_02_xpath_css_selector {
 	WebDriver driver;
 	WebDriverWait wait;
+	GenerateData genData;
 	
-	//Exercises
 	@Test
 	public void tc01_Login_with_Empty_Email_andPassword() {
 		driver.findElement(By.xpath("//div[@class='footer-container']//a[text()='My Account']")).click(); //xpath: footer My Account link
@@ -92,11 +93,11 @@ public class topic_02_xpath_css_selector {
 		driver.findElement(By.id("send2")).click();
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".col-left.sidebar.col-left-first")));
-		Assert.assertTrue(driver.findElement(By.xpath("//h1[text()='My Dashboard']")).isDisplayed(), "My Dashboard has been displayed.");
-		Assert.assertTrue(driver.findElement(By.xpath("//strong[text()='Hello, Automation Testing!']")).isDisplayed(), "Welcome paragraph has been displayed.");
-		
-		//Verify data...
-		System.out.println(driver.findElement(By.xpath("//a[contains(@href,'edit/changepass/1/')]/parent::p")).getText());
+		Assert.assertTrue(driver.findElement(By.xpath("//h1[text()='My Dashboard']")).isDisplayed());
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='welcome-msg']//strong[contains(text(),'Hello,')]")).getText(), "Hello, Automation Testing!");
+		//Verify user info
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("Automation Testing"));
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("automation@gmail.com"));
 		
 		driver.findElement(By.cssSelector(".account-cart-wrapper a[href$='customer/account/']")).click();
 		driver.findElement(By.xpath("//div[@id='header-account']//li[last()]")).click();
@@ -104,11 +105,37 @@ public class topic_02_xpath_css_selector {
 	
 	@Test
 	public void tc06_Create_New_Account() {
+		driver.navigate().refresh();
 		driver.findElement(By.xpath("//div[@class='footer-container']//a[text()='My Account']")).click(); //xpath: footer My Account link
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#login-form a[href*='customer/account/create']")));
 		driver.findElement(By.cssSelector("#login-form a[href*='customer/account/create']")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("firstname")));
+		driver.findElement(By.id("firstname")).clear();
+		String fname = genData.generateRandomString(6);
+		driver.findElement(By.id("firstname")).sendKeys(fname); //
+		driver.findElement(By.id("lastname")).clear();
+		String lname = genData.generateRandomString(6);
+		driver.findElement(By.id("lastname")).sendKeys(lname); //
+		driver.findElement(By.id("email_address")).clear();
+		String eAddress = genData.generateEmail(20);
+		driver.findElement(By.id("email_address")).sendKeys(eAddress); //
+		driver.findElement(By.id("password")).clear();
+		String pwd = genData.generateRandomAlphaNumeric(10);
+		driver.findElement(By.id("password")).sendKeys(pwd); //
+		driver.findElement(By.id("confirmation")).clear();
+		driver.findElement(By.id("confirmation")).sendKeys(pwd); //
+		if(!driver.findElement(By.id("is_subscribed")).isSelected()) {
+			driver.findElement(By.id("is_subscribed")).click();
+		}
+		driver.findElement(By.xpath("//button[@title='Register']")).click();
 		
-		//Updating...
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".col-left.sidebar.col-left-first")));
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span[contains(text(),'Thank you')]")).getText(), "Thank you for registering with Main Website Store.");
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='welcome-msg']//strong[contains(text(),'Hello,')]")).getText(), "Hello, " + fname + " " + lname + "!");
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains(fname + " " + lname));
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains(eAddress));
+		
+		System.out.println("Registration Info : " + fname + " " + lname + " " + eAddress + " " + pwd);
 	}
 	
 	@BeforeClass
@@ -116,6 +143,7 @@ public class topic_02_xpath_css_selector {
 		System.setProperty("webdriver.chrome.driver", ".\\drivers\\chromedriver.exe");
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, 15);
+		genData = new GenerateData();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 //		driver.manage().window().maximize();
 		driver.get("http://live.demoguru99.com/");
