@@ -21,23 +21,24 @@ public class topic_01_2_login_validation {
 		System.setProperty("webdriver.chrome.driver", ".\\drivers\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
-		driver.get("http://demo.guru99.com/v4/");
+//		driver.manage().window().maximize();
+		driver.get("http://live.demoguru99.com/index.php/");
 	}
 	
 	@Test
 	public void tc_01_checkURL() {
 		String loginPageUrl = driver.getCurrentUrl();
-		Assert.assertEquals(loginPageUrl, "http://demo.guru99.com/v4/");
+		Assert.assertEquals(loginPageUrl, "http://live.demoguru99.com/index.php/");
+		System.out.println(driver.findElement(By.xpath("//a[contains(@href,'term/popular/')]")).getAttribute("href"));
 	}
 	
-	@Test
+//	@Test
 	public void TC_02_checkPageTitle() {
 		String homePageTitle = driver.getTitle();
 		Assert.assertEquals(homePageTitle, "Guru99 Bank Home Page");
 	}
 
-	@Test
+//	@Test
 	public void TC_03_verifyLoginFormIsDisplayed() {
 		Assert.assertTrue(driver.findElement(By.xpath("//form[@name='frmLogin']")).isDisplayed());
 	}
