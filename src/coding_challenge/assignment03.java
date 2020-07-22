@@ -2,7 +2,7 @@ package coding_challenge;
 
 import org.testng.annotations.Test;
 
-import support.HttpResponseCode;
+import support.httpResponseCode;
 
 import org.testng.annotations.BeforeClass;
 
@@ -32,7 +32,7 @@ public class assignment03 {
 			if (!linkList.get(i).getAttribute("href").equals("") && 
 					!(linkList.get(i).getAttribute("href") == null)) {
 				if (linkList.get(i).getAttribute("href").contains("http")) {
-					reponseStatus = HttpResponseCode.getResponseCode(linkList.get(i).getAttribute("href").trim());
+					reponseStatus = httpResponseCode.getResponseCode(linkList.get(i).getAttribute("href").trim());
 					System.out.println("URL-" + (i+1) + " " + linkList.get(i).getAttribute("href")); 
 					System.out.println("Status: " + reponseStatus);
 					System.out.println();

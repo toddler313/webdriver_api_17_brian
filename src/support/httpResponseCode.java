@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HttpResponseCode {
+public class httpResponseCode {
 	
 	public static String getResponseCode (String urlString) throws MalformedURLException, IOException {
 		URL url = new URL(urlString);
