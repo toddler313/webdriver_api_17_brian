@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -21,7 +22,7 @@ public class topic_02_xpath_css_selector {
 	@Test
 	public void tc01_Login_with_Empty_Email_andPassword() {
 		driver.findElement(By.xpath("//div[@class='footer-container']//a[text()='My Account']")).click(); //xpath: footer My Account link
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='                Login or Create an Account            ']")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Login or Create an Account')]")));
 		driver.findElement(By.id("send2")).click();
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("advice-required-entry-email")));
@@ -62,7 +63,7 @@ public class topic_02_xpath_css_selector {
 	
 	@Test
 	public void tc03_Login_with_Password_Lower_6Chars() {
-		//keep moving from tc02
+		//continue tc02
 		driver.findElement(By.xpath("//input[@id='email']")).clear();
 		driver.findElement(By.xpath("//input[@id='email']")).sendKeys("automation@gmail.com");
 		driver.findElement(By.cssSelector("#pass")).clear();
@@ -74,7 +75,7 @@ public class topic_02_xpath_css_selector {
 	
 	@Test
 	public void tc04_Login_with_Incorrect_Password() {
-		//keep moving from tc03
+		//continue tc03
 		driver.findElement(By.cssSelector("#pass")).clear();
 		driver.findElement(By.cssSelector("#pass")).sendKeys("1234567");
 		driver.findElement(By.id("send2")).click();
@@ -133,15 +134,29 @@ public class topic_02_xpath_css_selector {
 		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span[contains(text(),'Thank you')]")).getText(), "Thank you for registering with Main Website Store.");
 		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='welcome-msg']//strong[contains(text(),'Hello,')]")).getText(), "Hello, " + fname + " " + lname + "!");
 		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains(fname + " " + lname));
+		
+		// Verify email with 2 ways
+		//-1st Using Java- contains() then no need to specify p[contains(.,<expression>)] in the xpath
 		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains(eAddress));
+		//-2nd Using Java- isDisplayed() then must specify above in the xpath
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p[contains(.,'bnafit0qu0i@test.org')]")).isDisplayed());
 		
 		System.out.println("Registration Info : " + fname + " " + lname + " " + eAddress + " " + pwd);
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".account-cart-wrapper a[href$='customer/account/']")));
+		driver.findElement(By.cssSelector(".account-cart-wrapper a[href$='customer/account/']")).click();
+		driver.findElement(By.xpath("//div[@id='header-account']//li[last()]")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'This is demo site')]")));
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.demoguru99.com/index.php/");
+		System.out.println("All TC PASSED.");
 	}
 	
 	@BeforeClass
 	public void beforeClass() {
 		System.setProperty("webdriver.chrome.driver", ".\\drivers\\chromedriver.exe");
 		driver = new ChromeDriver();
+//		System.setProperty("webdriver.gecko.driver", ".\\drivers\\geckodriver.exe");
+//		driver = new FirefoxDriver();
 		wait = new WebDriverWait(driver, 15);
 		genData = new GenerateData();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
