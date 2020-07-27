@@ -3,20 +3,15 @@ package coding_challenge;
 import org.testng.annotations.Test;
 
 import support.httpResponseCode;
-
 import org.testng.annotations.BeforeClass;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 
 public class assignment03 {

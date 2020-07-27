@@ -1,10 +1,10 @@
 package sele_api;
 
 import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -44,9 +44,9 @@ public class topic_02_xpath_css_selector {
 //		for (WebElement e : accountMainMenu) {
 //			if (e.getText().contentEquals("My Account")) {
 //				e.click();
-				//Do something else later...
+//				break;
 //			} else {
-				//Do something...
+//				System.out.println("This is: " + e.getAttribute("title") + ", Not 'My Cart'");
 //			}
 //		}
 		
@@ -97,8 +97,10 @@ public class topic_02_xpath_css_selector {
 		Assert.assertTrue(driver.findElement(By.xpath("//h1[text()='My Dashboard']")).isDisplayed());
 		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='welcome-msg']//strong[contains(text(),'Hello,')]")).getText(), "Hello, Automation Testing!");
 		//Verify user info
-		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("Automation Testing"));
-		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("automation@gmail.com"));
+		//Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("Automation Testing"));
+		//Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains("automation@gmail.com"));
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p[contains(.,'Automation Testing')]")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p[contains(.,'automation@gmail.com')]")).isDisplayed());
 		
 		driver.findElement(By.cssSelector(".account-cart-wrapper a[href$='customer/account/']")).click();
 		driver.findElement(By.xpath("//div[@id='header-account']//li[last()]")).click();
@@ -139,7 +141,7 @@ public class topic_02_xpath_css_selector {
 		//-1st Using Java- contains() then no need to specify p[contains(.,<expression>)] in the xpath
 		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p")).getText().contains(eAddress));
 		//-2nd Using Java- isDisplayed() then must specify above in the xpath
-		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p[contains(.,'bnafit0qu0i@test.org')]")).isDisplayed());
+//		Assert.assertTrue(driver.findElement(By.xpath("//a[contains(@href,'account/edit/changepass/1/')]/parent::p[contains(.,'bnafit0qu0i@test.org')]")).isDisplayed());
 		
 		System.out.println("Registration Info : " + fname + " " + lname + " " + eAddress + " " + pwd);
 		
