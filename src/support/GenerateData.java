@@ -43,10 +43,15 @@ public class GenerateData {
 		return url;
 	}
 
-	public static String generateRandomIntegerWithinRange(double min, double max) {
-		double x = (int) (Math.random() * ((max - min) + 1)) + min;
+	public static String generateRandomGender(int min, int max) {
+		int x = (int) (Math.random() * ((max - min) + 1)) + min;
 		if (x % 2 != 0) { return "male";
 		} else { return "female"; }
+	}
+	
+	public static int generateRandomIntegerWithinRange(int min, int max) {
+		int x = (int) ((Math.random() * ((max - min) + 1)) + min);
+		return x;
 	}
 
 }

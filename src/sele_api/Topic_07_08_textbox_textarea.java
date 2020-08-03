@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 import driver.SeleniumWebDriver;
 import support.GenerateData;
 
-public class Topic_07_08_textbox_textarea_dropdown {
+public class Topic_07_08_textbox_textarea {
 	SeleniumWebDriver swd;
 	WebDriverWait wait;
 	String registrationURL, mainURL, homepageURL;
@@ -197,7 +197,7 @@ public class Topic_07_08_textbox_textarea_dropdown {
 			homepageURL = "http://demo.guru99.com/v4/manager/Managerhomepage.php";
 			signupEmail = GenerateData.generateEmail(15);
 			custName = GenerateData.generateRandomString(7) + " " + GenerateData.generateRandomString(6);
-			gender = (String) GenerateData.generateRandomIntegerWithinRange(1, 3);
+			gender = (String) GenerateData.generateRandomGender(1, 3);
 			address = GenerateData.generateRandomNumber(3) + " " + GenerateData.generateRandomString(7) + "\n"
 					+ GenerateData.generateRandomString(7) + GenerateData.generateRandomString(7) + "\n"
 					+ GenerateData.generateRandomNumber(3) + GenerateData.generateRandomString(7);
