@@ -25,6 +25,7 @@ public class Topic_10_User_Interaction_part1 {
 	WebDriverWait expWait;
 	Actions act;
 
+	@Test
 	public void tc01_Mouse_Hover() {
 		swd.getDriver().get("https://myntra.com");
 		act.moveToElement(
@@ -47,7 +48,7 @@ public class Topic_10_User_Interaction_part1 {
 //		act.moveByOffset(1920, 1080);
 	}
 
-
+	@Test
 	public void tc02_Mouse_Click_Hold_Drag_Verify() {
 		int n = GenerateData.generateRandomIntegerWithinRange(0, 11);
 		swd.getDriver().get("https://jqueryui.com/resources/demos/selectable/display-grid.html");
@@ -82,7 +83,7 @@ public class Topic_10_User_Interaction_part1 {
 		for (int j = 0; j < beforeSelections.size(); j++) {
 			act.moveToElement(beforeSelections.get(j)).click().perform();
 		}
-		act.keyUp(Keys.CONTROL);
+		act.keyUp(Keys.CONTROL).perform();
 		
 		for (int k = 0; k < beforeSelections.size(); k++) {
 			Assert.assertTrue(beforeSelections.get(k).getAttribute("class").contains("ui-selected"));
@@ -102,7 +103,7 @@ public class Topic_10_User_Interaction_part1 {
 
 	@AfterClass
 	public void afterClass() {
-//		swd.getDriver().quit();
+		swd.getDriver().quit();
 	}
 
 	public void sleepInSeconds(double n) {
